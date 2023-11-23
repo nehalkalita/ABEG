@@ -2,4 +2,4 @@
 Apertium Bilingual Entry Generator
 
 
-![alt text](screenshot1.png)
+![alt text](screenshot.png)
