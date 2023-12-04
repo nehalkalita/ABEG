@@ -6,9 +6,10 @@ pdms = [] # imported paradigms # [paradigm_name_i, [[entry_j_left, entry_j_right
 def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
     global pdm_path
     global pdms
+
+
+
     # ignore white spaces if not bounded by alpha numeric characters
-    """print(l1)
-    print()"""
 
     gen_dix = [] # generated dix entries
     l1_lsx = [] # generated lsx entries
@@ -95,7 +96,10 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
     l1_lines = l1.splitlines() # segment content of l1 as individual lines
     l2_lines = l2.splitlines() # segment content of l2 as individual lines
 
+
+
     # delete unwanted blank lines
+
     i1 = 0
     while (l1_lines[i1] == '' or l1_lines[i1].isspace()):
         del l1_lines[i1]
@@ -154,7 +158,10 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
         del l1_lines[i1]
         i1 -= 1
 
+
+
     # store in l1_ent
+
     for i in l1_lines:
         if i != '':
             if i.__contains__('↤') == True:
@@ -253,7 +260,10 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
         else:
             l1_ent.append([])
 
+
+
     # delete unwanted blank lines
+
     i1 = 0
     while (l2_lines[i1] == '' or l2_lines[i1].isspace()):
         del l2_lines[i1]
@@ -312,7 +322,10 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
         del l2_lines[i1]
         i1 -= 1
 
+
+
     # store in l2_ent
+
     for i in l2_lines:
         if i != '':
             if i.__contains__('↤') == True:
@@ -422,7 +435,10 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
         print(j)
     print()"""
     
+
+
     # detect type of each entry
+
     l1_ent_type = [] # 0 -> dix; 1 -> lsx
     l2_ent_type = [] # 0 -> dix; 1 -> lsx
     
@@ -438,7 +454,10 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
         else:
             l2_ent_type.append(1)
 
+
+
     # check correctness of entries by counting no. of lines for each
+
     crt1 = True
     crt2 = True
     crt_gmr1 = True
@@ -531,6 +550,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     crt2 = False
                     break
     
+
     else:
         for i in range(len(l1_ent_type)):
             cn_l1_gr_i.append(len(cn_l1_r_groups))
@@ -646,13 +666,18 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
         msg_rtn = 'Missing root word or grammar types for language 2'
         return msg_rtn, 2
 
+
+
     # generate entries for dictionary
+
     if lsx_type != 1:
         for i in range(len(l1_ent_type)):
             pdm_check = [['',''], ['','']] # [word/root, grammar types] # used to compare with paradigm entries
             
             if l1_ent_type[i] == 1:
+
                 # enter in l1_l2_lsx
+
                 gen_dix.append([])
 
                 temp1 = '<e lm="' + l1_ent[i][0] + '" c="' + l1_ent[i][1] + '">\n<p><l>'
@@ -729,6 +754,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 l1_lsx.append(temp1)
 
                 if l2_ent_type[i] == 1:
+
                     # enter in l2_l1_lsx
 
                     temp1 = '<e lm="' + l2_ent[i][0] + '" c="' + l2_ent[i][1] + '">\n<p><l>'
@@ -804,7 +830,10 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     temp1 = temp1 + temp3 + '</r></p>\n</e>'
                     l2_lsx.append(temp1)
 
+
+
                     # compare pdm_check with entries in pdms
+
                     pdm_list = 0
                     while (pdm_list < len(pdms)):
                         j1 = 0
@@ -821,6 +850,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                         temp1 = '<e><p><l>' + temp2 + '</l><r>' + temp3 + '</r></p></e>'
                     gen_dix[-1].append(temp1)
 
+
                 else:
                     j1 = 0
                     while (j1 < len(l2_ent[i])):
@@ -831,6 +861,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                             pdm_check[1][1] = pdm_check[1][1] + '<s n="' + grm + '"/>'
                         
                         # compare pdm_check with entries in pdms
+
                         pdm_list = 0
                         while (pdm_list < len(pdms)):
                             j = 0
@@ -849,7 +880,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                         j1 += 2
 
             elif l2_ent_type[i] == 1:
+
                 # enter in l2_l1_lsx
+
                 gen_dix.append([])
 
                 temp1 = '<e lm="' + l2_ent[i][0] + '" c="' + l2_ent[i][1] + '">\n<p><l>'
@@ -934,6 +967,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                         pdm_check[0][1] = pdm_check[0][1] + '<s n="' + grm + '"/>'
                     
                     # compare pdm_check with entries in pdms
+
                     pdm_list = 0
                     while (pdm_list < len(pdms)):
                         j = 0
@@ -953,6 +987,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
 
             else:
                 # usual dix entry
+
                 gen_dix.append([])
                 j1 = 0
                 while (j1 < len(l1_ent[i])):
@@ -971,6 +1006,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                             pdm_check[1][1] = pdm_check[1][1] + '<s n="' + grm + '"/>'
                         
                         # compare pdm_check with entries in pdms
+
                         pdm_list = 0
                         while (pdm_list < len(pdms)):
                             j = 0
@@ -995,6 +1031,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
 
             if l1_ent_type[i] == 1:
                 # enter in l1_l2_lsx
+
                 gen_dix.append([])
 
                 temp1 = '<e lm="' + l1_ent[i][0] + '" c="' + l1_ent[i][1] + '">\n<p><l>'
@@ -1090,7 +1127,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     temp1 = temp1 + temp3 + '</r></p>\n</e>'
                     l2_lsx.append(temp1)
 
+
                     # compare pdm_check with entries in pdms
+
                     pdm_list = 0
                     while (pdm_list < len(pdms)):
                         j1 = 0
@@ -1117,6 +1156,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                             pdm_check[1][1] = pdm_check[1][1] + '<s n="' + grm + '"/>'
                         
                         # compare pdm_check with entries in pdms
+
                         pdm_list = 0
                         while (pdm_list < len(pdms)):
                             j = 0
@@ -1135,7 +1175,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                         j1 += 2
 
             elif l2_ent_type[i] == 1:
+
                 # enter in l2_l1_lsx
+
                 gen_dix.append([])
 
                 temp1 = '<e lm="' + l2_ent[i][0] + '" c="' + l2_ent[i][1] + '">\n<p><l>'
@@ -1176,6 +1218,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     pdm_check[1][0] += l2_ent[i][0][j1]
                 
                 # new grammar types
+
                 for grm in l2_ent[i][-1]:
                     temp2 = temp2 + '<s n="' + grm + '"/>'
                     pdm_check[1][1] = pdm_check[1][1] + '<s n="' + grm + '"/>'
@@ -1192,6 +1235,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                         pdm_check[0][1] = pdm_check[0][1] + '<s n="' + grm + '"/>'
                     
                     # compare pdm_check with entries in pdms
+
                     pdm_list = 0
                     while (pdm_list < len(pdms)):
                         j = 0
@@ -1211,6 +1255,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
 
             else:
                 # usual dix entry
+
                 gen_dix.append([])
                 j1 = 0
                 while (j1 < len(l1_ent[i])):
@@ -1229,6 +1274,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                             pdm_check[1][1] = pdm_check[1][1] + '<s n="' + grm + '"/>'
 
                         # compare pdm_check with entries in pdms
+
                         pdm_list = 0
                         while (pdm_list < len(pdms)):
                             j = 0
@@ -1246,6 +1292,8 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                         gen_dix[-1].append(temp2)
                         j2 += 2                
                     j1 += 2
+
+
 
     # delete repeated entries from new list
     
@@ -1337,6 +1385,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
 
 def delete_duplicate(addr):
     f_test = [1, 1, 1]# 0 if file does not exits    # dix, l1_lsx, l2_lsx
+    
     try:
         dix_data = []
         dix_file = open(addr + '/l1_l2_dix.txt', 'r', encoding='utf-8')
@@ -1345,7 +1394,10 @@ def delete_duplicate(addr):
             dix_data.append(line)
         dix_file.close()
 
+
+
         # check for duplicates
+
         i1 = 0
         while (i1 < len(dix_data) - 1):
             if ((len(dix_data[i1]) == 1) and (dix_data[i1] == '\n')):
@@ -1362,8 +1414,11 @@ def delete_duplicate(addr):
                     i1 += 1
             else:
                 i1 += 1
-        
+
+
+
         # delete sequencial new / empty lines
+
         i1 = 0
         while (i1 < len(dix_data) - 1):
             i2 = i1 + 1
@@ -1408,6 +1463,8 @@ def delete_duplicate(addr):
                         l1_lsx_data[-1].append(line)
         l1_lsx_file.close()
 
+
+
         # check for duplicates
         i1 = 0
         while (i1 < len(l1_lsx_data) - 1):
@@ -1420,6 +1477,10 @@ def delete_duplicate(addr):
                     i2 += 1
             if i2 == temp1:
                 i1 += 1
+
+
+
+        # write LSX file
 
         l1_lsx_file = open(addr + '/l1_l2_lsx.txt', 'w', newline='', encoding='utf-8')
         for i1 in l1_lsx_data:
@@ -1456,7 +1517,10 @@ def delete_duplicate(addr):
                         l2_lsx_data[-1].append(line)
         l2_lsx_file.close()
 
+
+
         # check for duplicates
+
         i1 = 0
         while (i1 < len(l2_lsx_data) - 1):
             i2 = i1 + 1
@@ -1469,6 +1533,10 @@ def delete_duplicate(addr):
             if i2 == temp1:
                 i1 += 1
 
+
+
+        # write LSX file
+
         l2_lsx_file = open(addr + '/l2_l1_lsx.txt', 'w', newline='', encoding='utf-8')
         for i1 in l2_lsx_data:
             for i2 in i1:
@@ -1478,6 +1546,8 @@ def delete_duplicate(addr):
     except:
         f_test[2] = 0
     
+
+
     if addr == '' or addr.isspace():
         msg_rtn = 'Output directory not specified'
         return msg_rtn, 0
@@ -1487,4 +1557,3 @@ def delete_duplicate(addr):
     else:
         msg_rtn = 'Successfully deleted duplicate entries'
         return msg_rtn, 1
-
