@@ -75,7 +75,7 @@ def Delete_duplicate():
     return
 
 def Tutorial():
-    webbrowser.open_new(r"https://www.youtube.com/watch?v=Rj8smi4btDI")
+    webbrowser.open_new(r"https://www.youtube.com/watch?v=AgFNe2tKhJw")
     return
 
 
