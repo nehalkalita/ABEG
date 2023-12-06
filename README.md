@@ -1,5 +1,4 @@
-# ABEG
-Apertium Bilingual Entry Generator
+# Apertium Bilingual Entry Generator
 
 
 
