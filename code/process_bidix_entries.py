@@ -691,8 +691,8 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 temp1 = temp1 + '</l>\n<r>'
                 
                 temp2 = ''
-                count1 = cn_l1_gr_i[i] # iterate through integers in cn_l_r_groups
-                count2 = 1 # iterate as per values of integers in cn_l_r_groups
+                count1 = cn_l1_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []]
+                count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 2]
                 j1 = 0
                 while (j1 < len(l1_ent[i][0]) - 1):
                     if l1_ent[i][0][j1].isspace():
@@ -705,10 +705,11 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                             else:
                                 temp2 += ' '
                                 pdm_check[0][0] += ' '
-                                count2 += 1
                                 if count2 >= cn_l1_r_groups[count1]:
                                     count1 += 1
                                     count2 = 1
+                                else:
+                                    count2 += 1
                     else:
                         temp2 += l1_ent[i][0][j1]
                         pdm_check[0][0] += l1_ent[i][0][j1]
@@ -768,8 +769,8 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     temp1 = temp1 + '</l>\n<r>'
 
                     temp3 = ''
-                    count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups
-                    count2 = 1 # iterate as per values of integers in cn_l_r_groups
+                    count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []]
+                    count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 2]
                     j1 = 0
                     while (j1 < len(l2_ent[i][0]) - 1):
                         if l2_ent[i][0][j1].isspace():
@@ -782,10 +783,11 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                 else:
                                     temp3 += ' '
                                     pdm_check[1][0] += ' '
-                                    count2 += 1
                                     if count2 >= cn_l2_r_groups[count1]:
                                         count1 += 1
                                         count2 = 1
+                                    else:
+                                        count2 += 1
                         else:
                             temp3 += l2_ent[i][0][j1]
                             pdm_check[1][0] += l2_ent[i][0][j1]
@@ -896,8 +898,8 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 temp1 = temp1 + '</l>\n<r>'
                 
                 temp2 = ''
-                count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups
-                count2 = 1 # iterate as per values of integers in cn_l_r_groups
+                count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []]
+                count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 2]
                 j1 = 0
                 while (j1 < len(l2_ent[i][0]) - 1):
                     if l2_ent[i][0][j1].isspace():
@@ -910,10 +912,11 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                             else:
                                 temp2 += ' '
                                 pdm_check[1][0] += ' '
-                                count2 += 1
                                 if count2 >= cn_l2_r_groups[count1]:
                                     count1 += 1
                                     count2 = 1
+                                else:
+                                    count2 += 1
                     else:
                         temp2 += l2_ent[i][0][j1]
                         pdm_check[1][0] += l2_ent[i][0][j1]
@@ -1059,10 +1062,11 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                             else:
                                 temp2 += ' '
                                 pdm_check[0][0] += ' '
-                                count2 += 1
                                 if count2 >= cn_l1_r_groups[count1]:
                                     count1 += 1
                                     count2 = 1
+                                else:
+                                    count2 += 1
                     else:
                         temp2 += l1_ent[i][0][j1]
                         pdm_check[0][0] += l1_ent[i][0][j1]
@@ -1093,8 +1097,8 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     temp1 = temp1 + '</l>\n<r>'
 
                     temp3 = ''
-                    count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups
-                    count2 = 1 # iterate as per values of integers in cn_l_r_groups
+                    count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []]
+                    count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 2]
                     j1 = 0
                     while (j1 < len(l2_ent[i][0]) - 1):
                         if l2_ent[i][0][j1].isspace():
@@ -1107,10 +1111,11 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                 else:
                                     temp3 += ' '
                                     pdm_check[1][0] += ' '
-                                    count2 += 1
                                     if count2 >= cn_l2_r_groups[count1]:
                                         count1 += 1
                                         count2 = 1
+                                    else:
+                                        count2 += 1
                         else:
                             temp3 += l2_ent[i][0][j1]
                             pdm_check[1][0] += l2_ent[i][0][j1]
@@ -1191,8 +1196,8 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 temp1 = temp1 + '</l>\n<r>'
                 
                 temp2 = ''
-                count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups
-                count2 = 1 # iterate as per values of integers in cn_l_r_groups
+                count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []]
+                count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 2]
                 j1 = 0
                 while (j1 < len(l2_ent[i][0]) - 1):
                     if l2_ent[i][0][j1].isspace():
@@ -1205,10 +1210,11 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                             else:
                                 temp2 += ' '
                                 pdm_check[1][0] += ' '
-                                count2 += 1
                                 if count2 >= cn_l2_r_groups[count1]:
                                     count1 += 1
                                     count2 = 1
+                                else:
+                                    count2 += 1
                     else:
                         temp2 += l2_ent[i][0][j1]
                         pdm_check[1][0] += l2_ent[i][0][j1]
