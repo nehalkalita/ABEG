@@ -37,6 +37,13 @@ def submit1_a():
         color_msg = 'red'
     status.configure(fg=color_msg, text='STATUS:  ' + msg_rtn[0])
 
+def submit_clr1():
+    L_entry_1.delete('1.0', END)
+
+def submit_clr2():
+    L_entry_2.delete('1.0', END)
+
+
 def ExitWin():
     #sys.exit()
     root.destroy()
@@ -88,7 +95,7 @@ root.title("ABEG")
 #root.resizable(0,0)
 root.iconbitmap(resource_path("logo.ico"))
 size_10 = font.Font(size=10)
-size_11 = font.Font(size=11)
+size_12 = font.Font(size=12)
 
 CB1_var = IntVar()
 CB2_var = IntVar()
@@ -136,9 +143,13 @@ button_s.place(relx=0.86, rely=0.885, relwidth=0.11)
 
 l_font = font.Font(size=11, weight='bold')
 label_l1 = Label(root, text='Language 1', font=l_font, justify= LEFT)
-label_l1.place(relx=0.2, rely=0.28)
+label_l1.place(relx=0.02, rely=0.28) # relx=0.2
+button_clr1 = Button(root, text="❌", font=size_10, height=1, width=2, bg='#cacaca', command=lambda:submit_clr1())
+button_clr1.place(relx=0.425, rely=0.28)
 label_l2 = Label(root, text='Language 2', font=l_font, justify= LEFT)
-label_l2.place(relx=0.7, rely=0.28)
+label_l2.place(relx=0.52, rely=0.28) # relx=0.7
+button_clr2 = Button(root, text="❌", font=size_10, height=1, width=2, bg='#cacaca', command=lambda:submit_clr2())
+button_clr2.place(relx=0.925, rely=0.28)
 status = Label(root, fg='blue', text='STATUS:  No data entered')
 status.place(relx=0.035, rely=0.89)
 
@@ -150,7 +161,7 @@ text_scroll_1h = Scrollbar(root, orient = HORIZONTAL)
 text_scroll_1h.place(relx=0.005, rely=0.815, relwidth=0.468)
 text_scroll_1v = Scrollbar(root, orient = VERTICAL)
 text_scroll_1v.place(relx=0.465, rely=0.338, relheight=0.482)
-L_entry_1 = Text(root, xscrollcommand=text_scroll_1h.set, yscrollcommand=text_scroll_1v.set, wrap="none")
+L_entry_1 = Text(root, xscrollcommand=text_scroll_1h.set, yscrollcommand=text_scroll_1v.set, wrap="none", undo=True)
 L_entry_1.place(relx=0.014, rely=0.35, relwidth=0.45, relheight=0.45)
 text_scroll_1h.config(command = L_entry_1.xview)
 text_scroll_1v.config(command = L_entry_1.yview)
@@ -162,7 +173,7 @@ text_scroll_2h = Scrollbar(root, orient = HORIZONTAL)
 text_scroll_2h.place(relx=0.508, rely=0.815, relwidth=0.468)
 text_scroll_2v = Scrollbar(root, orient = VERTICAL)
 text_scroll_2v.place(relx=0.967, rely=0.338, relheight=0.482)
-L_entry_2 = Text(root, xscrollcommand=text_scroll_2h.set, yscrollcommand=text_scroll_2v.set, wrap="none")
+L_entry_2 = Text(root, xscrollcommand=text_scroll_2h.set, yscrollcommand=text_scroll_2v.set, wrap="none", undo=True)
 L_entry_2.place(relx=0.515, rely=0.35, relwidth=0.45, relheight=0.45)
 text_scroll_2h.config(command = L_entry_2.xview)
 text_scroll_2v.config(command = L_entry_2.yview)
