@@ -679,181 +679,205 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 # enter in l1_l2_lsx
 
                 gen_dix.append([])
-
-                temp1 = '<e lm="' + l1_ent[i][0] + '" c="' + l1_ent[i][1] + '">\n<p><l>'
-                j1 = 2
-                while (j1 < len(l1_ent[i])):
-                    temp1 = temp1 + l1_ent[i][j1]
-                    for j2 in l1_ent[i][j1 + 1]:
-                        temp1 = temp1 + '<s n="' + j2 + '"/>'
-                    temp1 = temp1 + '<d/>'
-                    j1 += 2
-                temp1 = temp1 + '</l>\n<r>'
                 
-                temp2 = ''
-                count1 = cn_l1_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []] -> len = 3
-                count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 'give' = 1, 'up' = 2]
-                j1 = 0
-                while (j1 < len(l1_ent[i][0]) - 1):
-                    if l1_ent[i][0][j1].isspace():
-                        if l1_ent[i][0][j1 + 1].isspace() == False:
-                            if count2 >= cn_l1_r_groups[count1]:
-                                temp2 += '<b/>'
-                                pdm_check[0][0] += '<b/>'
-                                count1 += 1
-                                count2 = 1
-                            else:
-                                temp2 += ' '
-                                pdm_check[0][0] += ' '
-                                if count2 >= cn_l1_r_groups[count1]:
-                                    count1 += 1
-                                    count2 = 1
-                                else:
-                                    count2 += 1
-                    else:
-                        temp2 += l1_ent[i][0][j1]
-                        pdm_check[0][0] += l1_ent[i][0][j1]
-                    j1 += 1
-                if l1_ent[i][0][j1].isspace() == False:
-                    temp2 += l1_ent[i][0][j1]
-                    pdm_check[0][0] += l1_ent[i][0][j1]
-
-                r_list = [] # list of repeated 1st grammar types
-                j1 = 3
-                while (j1 < len(l1_ent[i]) - 2):
-                    if r_list.__contains__(j1) == False:
-                        j2 = j1 + 2
-                        while (j2 < len(l1_ent[i])):
-                            if l1_ent[i][j1][0] == l1_ent[i][j2][0]:
-                                r_list.append(j2)
-                            j2 += 2
-                        temp2 = temp2 + '<s n="' + l1_ent[i][j1][0] + '"/>'
-                        pdm_check[0][1] = pdm_check[0][1] + '<s n="' + l1_ent[i][j1][0] + '"/>'
-                    j1 += 2
-                if r_list.__contains__(j1) == False:
-                    temp2 = temp2 + '<s n="' + l1_ent[i][j1][0] + '"/>'
-                    pdm_check[0][1] = pdm_check[0][1] + '<s n="' + l1_ent[i][j1][0] + '"/>'
+                try:
+                    temp1 = '<e lm="' + l1_ent[i][0] + '" c="' + l1_ent[i][1] + '">\n<p><l>'
                 
-                j1 = 1
-                while (j1 < len(l1_ent[i][3])):
-                    j2 = 5
-                    while (j2 < len(l1_ent[i])):
-                        grm = 1
-                        while (grm < len(l1_ent[i][j2])):
-                            if l1_ent[i][j2][grm] == l1_ent[i][3][j1]:
-                                break # found
-                            grm += 1
-                        if grm == len(l1_ent[i][j2]):
-                            break # do not check succeeding grammar types in the list
-                        j2 += 2
-                    if j2 >= len(l1_ent[i]):
-                        temp2 = temp2 + '<s n="' + l1_ent[i][3][j1] + '"/>'
-                        pdm_check[0][1] = pdm_check[0][1] + '<s n="' + l1_ent[i][3][j1] + '"/>'
-                    j1 += 1
-                    
-                temp1 = temp1 + temp2 + '</r></p>\n</e>'
-                l1_lsx.append(temp1)
-
-                if l2_ent_type[i] == 1:
-
-                    # enter in l2_l1_lsx
-
-                    temp1 = '<e lm="' + l2_ent[i][0] + '" c="' + l2_ent[i][1] + '">\n<p><l>'
                     j1 = 2
-                    while (j1 < len(l2_ent[i])):
-                        temp1 = temp1 + l2_ent[i][j1]
-                        for j2 in l2_ent[i][j1 + 1]:
+                    while (j1 < len(l1_ent[i])):
+                        temp1 = temp1 + l1_ent[i][j1]
+                        for j2 in l1_ent[i][j1 + 1]:
                             temp1 = temp1 + '<s n="' + j2 + '"/>'
                         temp1 = temp1 + '<d/>'
                         j1 += 2
+                
                     temp1 = temp1 + '</l>\n<r>'
-
-                    temp3 = ''
-                    count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []] -> len = 3
+                    
+                    temp2 = ''
+                    count1 = cn_l1_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []] -> len = 3
                     count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 'give' = 1, 'up' = 2]
                     j1 = 0
-                    while (j1 < len(l2_ent[i][0]) - 1):
-                        if l2_ent[i][0][j1].isspace():
-                            if l2_ent[i][0][j1 + 1].isspace() == False:
-                                if count2 >= cn_l2_r_groups[count1]:
-                                    temp3 += '<b/>'
-                                    pdm_check[1][0] += '<b/>'
+                    while (j1 < len(l1_ent[i][0]) - 1):
+                        if l1_ent[i][0][j1].isspace():
+                            if l1_ent[i][0][j1 + 1].isspace() == False:
+                                if count2 >= cn_l1_r_groups[count1]:
+                                    temp2 += '<b/>'
+                                    pdm_check[0][0] += '<b/>'
                                     count1 += 1
                                     count2 = 1
                                 else:
-                                    temp3 += ' '
-                                    pdm_check[1][0] += ' '
-                                    if count2 >= cn_l2_r_groups[count1]:
+                                    temp2 += ' '
+                                    pdm_check[0][0] += ' '
+                                    if count2 >= cn_l1_r_groups[count1]:
                                         count1 += 1
                                         count2 = 1
                                     else:
                                         count2 += 1
                         else:
-                            temp3 += l2_ent[i][0][j1]
-                            pdm_check[1][0] += l2_ent[i][0][j1]
+                            temp2 += l1_ent[i][0][j1]
+                            pdm_check[0][0] += l1_ent[i][0][j1]
                         j1 += 1
-                    if l2_ent[i][0][j1].isspace() == False:
-                        temp3 += l2_ent[i][0][j1]
-                        pdm_check[1][0] += l2_ent[i][0][j1]
+                    if l1_ent[i][0][j1].isspace() == False:
+                        temp2 += l1_ent[i][0][j1]
+                        pdm_check[0][0] += l1_ent[i][0][j1]
 
                     r_list = [] # list of repeated 1st grammar types
                     j1 = 3
-                    while (j1 < len(l2_ent[i]) - 2):
+                    while (j1 < len(l1_ent[i]) - 2):
                         if r_list.__contains__(j1) == False:
                             j2 = j1 + 2
-                            while (j2 < len(l2_ent[i])):
-                                if l2_ent[i][j1][0] == l2_ent[i][j2][0]:
+                            while (j2 < len(l1_ent[i])):
+                                if l1_ent[i][j1][0] == l1_ent[i][j2][0]:
                                     r_list.append(j2)
                                 j2 += 2
-                            temp3 = temp3 + '<s n="' + l2_ent[i][j1][0] + '"/>'
-                            pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][j1][0] + '"/>'
+                            temp2 = temp2 + '<s n="' + l1_ent[i][j1][0] + '"/>'
+                            pdm_check[0][1] = pdm_check[0][1] + '<s n="' + l1_ent[i][j1][0] + '"/>'
                         j1 += 2
                     if r_list.__contains__(j1) == False:
-                        temp3 = temp3 + '<s n="' + l2_ent[i][j1][0] + '"/>'
-                        pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][j1][0] + '"/>'
+                        temp2 = temp2 + '<s n="' + l1_ent[i][j1][0] + '"/>'
+                        pdm_check[0][1] = pdm_check[0][1] + '<s n="' + l1_ent[i][j1][0] + '"/>'
                     
                     j1 = 1
-                    while (j1 < len(l2_ent[i][3])):
+                    while (j1 < len(l1_ent[i][3])):
                         j2 = 5
-                        while (j2 < len(l2_ent[i])):
+                        while (j2 < len(l1_ent[i])):
                             grm = 1
-                            while (grm < len(l2_ent[i][j2])):
-                                if l2_ent[i][j2][grm] == l2_ent[i][3][j1]:
+                            while (grm < len(l1_ent[i][j2])):
+                                if l1_ent[i][j2][grm] == l1_ent[i][3][j1]:
                                     break # found
                                 grm += 1
-                            if grm == len(l2_ent[i][j2]):
+                            if grm == len(l1_ent[i][j2]):
                                 break # do not check succeeding grammar types in the list
                             j2 += 2
-                        if j2 >= len(l2_ent[i]):
-                            temp3 = temp3 + '<s n="' + l2_ent[i][3][j1] + '"/>'
-                            pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][3][j1] + '"/>'
+                        if j2 >= len(l1_ent[i]):
+                            temp2 = temp2 + '<s n="' + l1_ent[i][3][j1] + '"/>'
+                            pdm_check[0][1] = pdm_check[0][1] + '<s n="' + l1_ent[i][3][j1] + '"/>'
                         j1 += 1
                         
-                    temp1 = temp1 + temp3 + '</r></p>\n</e>'
-                    l2_lsx.append(temp1)
+                    temp1 = temp1 + temp2 + '</r></p>\n</e>'
+                    l1_lsx.append(temp1)
+                    msg_rtn = ''
 
+                except:
+                    msg_rtn = 'Possible error in grammar types for ' #Language 1             
+            
+                if l2_ent_type[i] == 1:
 
+                    # enter in l2_l1_lsx
 
-                    # compare pdm_check with entries in pdms
+                    try:
+                        temp1 = '<e lm="' + l2_ent[i][0] + '" c="' + l2_ent[i][1] + '">\n<p><l>'
+                        j1 = 2
+                        while (j1 < len(l2_ent[i])):
+                            temp1 = temp1 + l2_ent[i][j1]
+                            for j2 in l2_ent[i][j1 + 1]:
+                                temp1 = temp1 + '<s n="' + j2 + '"/>'
+                            temp1 = temp1 + '<d/>'
+                            j1 += 2
+                        temp1 = temp1 + '</l>\n<r>'
 
-                    pdm_list = 0
-                    while (pdm_list < len(pdms)):
+                        temp3 = ''
+                        count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []] -> len = 3
+                        count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 'give' = 1, 'up' = 2]
                         j1 = 0
-                        while (j1 < len(pdms[pdm_list][1])):
-                            if pdms[pdm_list][1][j1][0] == pdm_check[0][1] and pdms[pdm_list][1][j1][1] == pdm_check[1][1]:
-                                break
+                        while (j1 < len(l2_ent[i][0]) - 1):
+                            if l2_ent[i][0][j1].isspace():
+                                if l2_ent[i][0][j1 + 1].isspace() == False:
+                                    if count2 >= cn_l2_r_groups[count1]:
+                                        temp3 += '<b/>'
+                                        pdm_check[1][0] += '<b/>'
+                                        count1 += 1
+                                        count2 = 1
+                                    else:
+                                        temp3 += ' '
+                                        pdm_check[1][0] += ' '
+                                        if count2 >= cn_l2_r_groups[count1]:
+                                            count1 += 1
+                                            count2 = 1
+                                        else:
+                                            count2 += 1
+                            else:
+                                temp3 += l2_ent[i][0][j1]
+                                pdm_check[1][0] += l2_ent[i][0][j1]
                             j1 += 1
-                        if j1 < len(pdms[pdm_list][1]):
-                            # add new temp1 here
-                            temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + pdm_check[1][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                            break
-                        pdm_list += 1
-                    if pdm_list == len(pdms) or len(pdms) == 0:
-                        temp1 = '<e><p><l>' + temp2 + '</l><r>' + temp3 + '</r></p></e>'
-                    gen_dix[-1].append(temp1)
+                        if l2_ent[i][0][j1].isspace() == False:
+                            temp3 += l2_ent[i][0][j1]
+                            pdm_check[1][0] += l2_ent[i][0][j1]
+
+                        r_list = [] # list of repeated 1st grammar types
+                        j1 = 3
+                        while (j1 < len(l2_ent[i]) - 2):
+                            if r_list.__contains__(j1) == False:
+                                j2 = j1 + 2
+                                while (j2 < len(l2_ent[i])):
+                                    if l2_ent[i][j1][0] == l2_ent[i][j2][0]:
+                                        r_list.append(j2)
+                                    j2 += 2
+                                temp3 = temp3 + '<s n="' + l2_ent[i][j1][0] + '"/>'
+                                pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][j1][0] + '"/>'
+                            j1 += 2
+                        if r_list.__contains__(j1) == False:
+                            temp3 = temp3 + '<s n="' + l2_ent[i][j1][0] + '"/>'
+                            pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][j1][0] + '"/>'
+                        
+                        j1 = 1
+                        while (j1 < len(l2_ent[i][3])):
+                            j2 = 5
+                            while (j2 < len(l2_ent[i])):
+                                grm = 1
+                                while (grm < len(l2_ent[i][j2])):
+                                    if l2_ent[i][j2][grm] == l2_ent[i][3][j1]:
+                                        break # found
+                                    grm += 1
+                                if grm == len(l2_ent[i][j2]):
+                                    break # do not check succeeding grammar types in the list
+                                j2 += 2
+                            if j2 >= len(l2_ent[i]):
+                                temp3 = temp3 + '<s n="' + l2_ent[i][3][j1] + '"/>'
+                                pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][3][j1] + '"/>'
+                            j1 += 1
+                            
+                        temp1 = temp1 + temp3 + '</r></p>\n</e>'
+                        l2_lsx.append(temp1)                
+
+
+
+                        # compare pdm_check with entries in pdms
+
+                        pdm_list = 0
+                        while (pdm_list < len(pdms)):
+                            j1 = 0
+                            while (j1 < len(pdms[pdm_list][1])):
+                                if pdms[pdm_list][1][j1][0] == pdm_check[0][1] and pdms[pdm_list][1][j1][1] == pdm_check[1][1]:
+                                    break
+                                j1 += 1
+                            if j1 < len(pdms[pdm_list][1]):
+                                # add new temp1 here
+                                temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + pdm_check[1][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
+                                break
+                            pdm_list += 1
+                        if pdm_list == len(pdms) or len(pdms) == 0:
+                            temp1 = '<e><p><l>' + temp2 + '</l><r>' + temp3 + '</r></p></e>'
+                        gen_dix[-1].append(temp1)
+
+                        if msg_rtn != '':
+                            msg_rtn = msg_rtn + 'Language 1'
+                            return msg_rtn, 2
+
+                    except:
+                        if msg_rtn != '':
+                            msg_rtn = msg_rtn + 'both languages'
+                            return msg_rtn, 2
+                        else:
+                            msg_rtn = 'Possible error in grammar types for Language 2'
+                            return msg_rtn, 2
 
 
                 else:
+                    if msg_rtn != '':
+                        msg_rtn = msg_rtn + 'Language 1'
+                        return msg_rtn, 2
+                    
                     j1 = 0
                     while (j1 < len(l2_ent[i])):
                         temp1 = '<e><p><l>' + temp2 + '</l><r>' + l2_ent[i][j1]
@@ -887,106 +911,111 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
 
                 gen_dix.append([])
 
-                temp1 = '<e lm="' + l2_ent[i][0] + '" c="' + l2_ent[i][1] + '">\n<p><l>'
-                j1 = 2
-                while (j1 < len(l2_ent[i])):
-                    temp1 = temp1 + l2_ent[i][j1]
-                    for j2 in l2_ent[i][j1 + 1]:
-                        temp1 = temp1 + '<s n="' + j2 + '"/>'
-                    temp1 = temp1 + '<d/>'
-                    j1 += 2
-                temp1 = temp1 + '</l>\n<r>'
-                
-                temp2 = ''
-                count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []] -> len = 3
-                count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 'give' = 1, 'up' = 2]
-                j1 = 0
-                while (j1 < len(l2_ent[i][0]) - 1):
-                    if l2_ent[i][0][j1].isspace():
-                        if l2_ent[i][0][j1 + 1].isspace() == False:
-                            if count2 >= cn_l2_r_groups[count1]:
-                                temp2 += '<b/>'
-                                pdm_check[1][0] += '<b/>'
-                                count1 += 1
-                                count2 = 1
-                            else:
-                                temp2 += ' '
-                                pdm_check[1][0] += ' '
+                try:
+                    temp1 = '<e lm="' + l2_ent[i][0] + '" c="' + l2_ent[i][1] + '">\n<p><l>'
+                    j1 = 2
+                    while (j1 < len(l2_ent[i])):
+                        temp1 = temp1 + l2_ent[i][j1]
+                        for j2 in l2_ent[i][j1 + 1]:
+                            temp1 = temp1 + '<s n="' + j2 + '"/>'
+                        temp1 = temp1 + '<d/>'
+                        j1 += 2
+                    temp1 = temp1 + '</l>\n<r>'
+                    
+                    temp2 = ''
+                    count1 = cn_l2_gr_i[i] # iterate through integers in cn_l_r_groups # [[], [], []] -> len = 3
+                    count2 = 1 # iterate as per values of integers in cn_l_r_groups # ['give up' -> 'give' = 1, 'up' = 2]
+                    j1 = 0
+                    while (j1 < len(l2_ent[i][0]) - 1):
+                        if l2_ent[i][0][j1].isspace():
+                            if l2_ent[i][0][j1 + 1].isspace() == False:
                                 if count2 >= cn_l2_r_groups[count1]:
+                                    temp2 += '<b/>'
+                                    pdm_check[1][0] += '<b/>'
                                     count1 += 1
                                     count2 = 1
                                 else:
-                                    count2 += 1
-                    else:
+                                    temp2 += ' '
+                                    pdm_check[1][0] += ' '
+                                    if count2 >= cn_l2_r_groups[count1]:
+                                        count1 += 1
+                                        count2 = 1
+                                    else:
+                                        count2 += 1
+                        else:
+                            temp2 += l2_ent[i][0][j1]
+                            pdm_check[1][0] += l2_ent[i][0][j1]
+                        j1 += 1
+                    if l2_ent[i][0][j1].isspace() == False:
                         temp2 += l2_ent[i][0][j1]
                         pdm_check[1][0] += l2_ent[i][0][j1]
-                    j1 += 1
-                if l2_ent[i][0][j1].isspace() == False:
-                    temp2 += l2_ent[i][0][j1]
-                    pdm_check[1][0] += l2_ent[i][0][j1]
-                
-                r_list = [] # list of repeated 1st grammar types
-                j1 = 3
-                while (j1 < len(l2_ent[i]) - 2):
+                    
+                    r_list = [] # list of repeated 1st grammar types
+                    j1 = 3
+                    while (j1 < len(l2_ent[i]) - 2):
+                        if r_list.__contains__(j1) == False:
+                            j2 = j1 + 2
+                            while (j2 < len(l2_ent[i])):
+                                if l2_ent[i][j1][0] == l2_ent[i][j2][0]:
+                                    r_list.append(j2)
+                                j2 += 2
+                            temp2 = temp2 + '<s n="' + l2_ent[i][j1][0] + '"/>'
+                            pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][j1][0] + '"/>'
+                        j1 += 2
                     if r_list.__contains__(j1) == False:
-                        j2 = j1 + 2
-                        while (j2 < len(l2_ent[i])):
-                            if l2_ent[i][j1][0] == l2_ent[i][j2][0]:
-                                r_list.append(j2)
-                            j2 += 2
                         temp2 = temp2 + '<s n="' + l2_ent[i][j1][0] + '"/>'
                         pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][j1][0] + '"/>'
-                    j1 += 2
-                if r_list.__contains__(j1) == False:
-                    temp2 = temp2 + '<s n="' + l2_ent[i][j1][0] + '"/>'
-                    pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][j1][0] + '"/>'
-                
-                j1 = 1
-                while (j1 < len(l2_ent[i][3])):
-                    j2 = 5
-                    while (j2 < len(l2_ent[i])):
-                        grm = 1
-                        while (grm < len(l2_ent[i][j2])):
-                            if l2_ent[i][j2][grm] == l2_ent[i][3][j1]:
-                                break # found
-                            grm += 1
-                        if grm == len(l2_ent[i][j2]):
-                            break # do not check succeeding grammar types in the list
-                        j2 += 2
-                    if j2 >= len(l2_ent[i]):
-                        temp2 = temp2 + '<s n="' + l2_ent[i][3][j1] + '"/>'
-                        pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][3][j1] + '"/>'
-                    j1 += 1
                     
-                temp1 = temp1 + temp2 + '</r></p>\n</e>'
-                l2_lsx.append(temp1)
+                    j1 = 1
+                    while (j1 < len(l2_ent[i][3])):
+                        j2 = 5
+                        while (j2 < len(l2_ent[i])):
+                            grm = 1
+                            while (grm < len(l2_ent[i][j2])):
+                                if l2_ent[i][j2][grm] == l2_ent[i][3][j1]:
+                                    break # found
+                                grm += 1
+                            if grm == len(l2_ent[i][j2]):
+                                break # do not check succeeding grammar types in the list
+                            j2 += 2
+                        if j2 >= len(l2_ent[i]):
+                            temp2 = temp2 + '<s n="' + l2_ent[i][3][j1] + '"/>'
+                            pdm_check[1][1] = pdm_check[1][1] + '<s n="' + l2_ent[i][3][j1] + '"/>'
+                        j1 += 1
+                        
+                    temp1 = temp1 + temp2 + '</r></p>\n</e>'
+                    l2_lsx.append(temp1)
 
-                j1 = 0
-                while (j1 < len(l1_ent[i])):
-                    temp1 = '<e><p><l>' + l1_ent[i][j1]
-                    pdm_check[0][1] = ''
-                    for grm in l1_ent[i][j1 + 1]:
-                        temp1 = temp1 + '<s n="' + grm + '"/>'
-                        pdm_check[0][1] = pdm_check[0][1] + '<s n="' + grm + '"/>'
-                    
-                    # compare pdm_check with entries in pdms
+                    j1 = 0
+                    while (j1 < len(l1_ent[i])):
+                        temp1 = '<e><p><l>' + l1_ent[i][j1]
+                        pdm_check[0][1] = ''
+                        for grm in l1_ent[i][j1 + 1]:
+                            temp1 = temp1 + '<s n="' + grm + '"/>'
+                            pdm_check[0][1] = pdm_check[0][1] + '<s n="' + grm + '"/>'
+                        
+                        # compare pdm_check with entries in pdms
 
-                    pdm_list = 0
-                    while (pdm_list < len(pdms)):
-                        j = 0
-                        while (j < len(pdms[pdm_list][1])):
-                            if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                        pdm_list = 0
+                        while (pdm_list < len(pdms)):
+                            j = 0
+                            while (j < len(pdms[pdm_list][1])):
+                                if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                                    break
+                                j += 1
+                            if j < len(pdms[pdm_list][1]):
+                                # add new temp1 here
+                                temp1 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + pdm_check[0][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                 break
-                            j += 1
-                        if j < len(pdms[pdm_list][1]):
-                            # add new temp1 here
-                            temp1 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + pdm_check[0][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                            break
-                        pdm_list += 1
-                    if pdm_list == len(pdms) or len(pdms) == 0:
-                        temp1 = temp1 + '</l><r>' + temp2 + '</r></p></e>'
-                    gen_dix[-1].append(temp1)
-                    j1 += 2
+                            pdm_list += 1
+                        if pdm_list == len(pdms) or len(pdms) == 0:
+                            temp1 = temp1 + '</l><r>' + temp2 + '</r></p></e>'
+                        gen_dix[-1].append(temp1)
+                        j1 += 2
+                
+                except:
+                    msg_rtn = 'Possible error in grammar types for Language 2'
+                    return msg_rtn, 2
 
             else:
                 # usual dix entry
@@ -1033,6 +1062,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
             pdm_check = [['',''], ['','']] # [word/root, grammar types] # used to compare with paradigm entries
 
             if l1_ent_type[i] == 1:
+
                 # enter in l1_l2_lsx
 
                 gen_dix.append([])
@@ -1084,6 +1114,7 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 l1_lsx.append(temp1)
 
                 if l2_ent_type[i] == 1:
+
                     # enter in l2_l1_lsx
 
                     temp1 = '<e lm="' + l2_ent[i][0] + '" c="' + l2_ent[i][1] + '">\n<p><l>'
