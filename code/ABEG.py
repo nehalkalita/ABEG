@@ -27,8 +27,13 @@ def change_text_2():
     entry_pdm.delete(0,END)
     entry_pdm.insert(0,filename)
 
+def change_text_3():
+    filename = fd.askopenfilename(parent=root, filetypes=[('Text files', ['*.txt', '*.TXT']),('All files', '*'),])
+    entry_punc.delete(0,END)
+    entry_punc.insert(0,filename)
+
 def submit1_a():
-    msg_rtn = pbe.process_entries(int(CB1_var.get()), int(CB2_var.get()), entry_out.get(), entry_pdm.get(), L_entry_1.get("1.0","end-1c"), L_entry_2.get("1.0","end-1c"))
+    msg_rtn = pbe.process_entries(int(CB1_var.get()), int(CB2_var.get()), entry_out.get(), entry_pdm.get(), entry_punc.get(), L_entry_1.get("1.0","end-1c"), L_entry_2.get("1.0","end-1c"))
     if msg_rtn[1] == 0:
         color_msg = 'blue'
     elif msg_rtn[1] == 1:
@@ -82,7 +87,7 @@ def Delete_duplicate():
     return
 
 def Tutorial():
-    webbrowser.open_new(r"https://www.youtube.com/watch?v=AgFNe2tKhJw")
+    webbrowser.open_new(r"https://www.youtube.com/playlist?list=PL5ma3f7gCGnGMfN_NZH1db1yQLXvVKWxL")
     return
 
 
@@ -101,8 +106,8 @@ CB1_var = IntVar()
 CB2_var = IntVar()
 
 frame1 = Frame(root, bg='#aaaaaa', bd=5)
-#frame1.place(relx=0.499, rely=0.02, relwidth=0.98, relheight=0.3, anchor='n')
-frame1.place(relx=0.499, rely=0.02, relwidth=0.98, relheight=0.218, anchor='n')
+#frame1.place(relx=0.499, rely=0.00, relwidth=0.98, relheight=0.218, anchor='n')
+frame1.place(relx=0.499, rely=0.00, relwidth=0.98, relheight=0.245, anchor='n')
 
 
 
@@ -128,28 +133,33 @@ root.config(menu= menubar)
 # General widgets
 
 button_out = Button(root, text="Output directory", font=size_10, height=1, width=15, bg='#cacaca', command=lambda:change_text_1())
-button_out.place(relx=0.037, rely=0.05, relwidth=0.17)
+button_out.place(relx=0.03, rely=0.01, relwidth=0.17)
 entry_out = Entry(root, font=size_10)
-entry_out.place(relx=0.24, rely=0.055, relwidth=0.73)
+entry_out.place(relx=0.24, rely=0.018, relwidth=0.73)
 
 button_pdm = Button(root, text="Paradigm file", font=size_10, height=1, width=15, bg='#cacaca', command=lambda:change_text_2())
-button_pdm.place(relx=0.037, rely=0.15, relwidth=0.17)
+button_pdm.place(relx=0.03, rely=0.09, relwidth=0.17)
 entry_pdm = Entry(root, font=size_10)
-entry_pdm.place(relx=0.24, rely=0.155, relwidth=0.73)
-#entry_pdm.place(relx=0.21, rely=0.155, relwidth=0.75)
+entry_pdm.place(relx=0.24, rely=0.096, relwidth=0.73)
+
+button_punc = Button(root, text="Punctuation file", font=size_10, height=1, width=15, bg='#cacaca', command=lambda:change_text_3())
+button_punc.place(relx=0.03, rely=0.17, relwidth=0.17)
+entry_punc = Entry(root, font=size_10)
+entry_punc.place(relx=0.24, rely=0.176, relwidth=0.73)
+
 
 button_s = Button(root, text="Submit", font=size_10, height=1, width=10, bg='#cacaca', command=lambda:submit1_a())
 button_s.place(relx=0.86, rely=0.885, relwidth=0.11)
 
 l_font = font.Font(size=11, weight='bold')
 label_l1 = Label(root, text='Language 1', font=l_font, justify= LEFT)
-label_l1.place(relx=0.02, rely=0.28) # relx=0.2
+label_l1.place(relx=0.033, rely=0.28) # relx=0.2
 button_clr1 = Button(root, text="❌", font=size_10, height=1, width=2, bg='#cacaca', command=lambda:submit_clr1())
-button_clr1.place(relx=0.425, rely=0.28)
+button_clr1.place(relx=0.422, rely=0.28)
 label_l2 = Label(root, text='Language 2', font=l_font, justify= LEFT)
-label_l2.place(relx=0.52, rely=0.28) # relx=0.7
+label_l2.place(relx=0.533, rely=0.28) # relx=0.7
 button_clr2 = Button(root, text="❌", font=size_10, height=1, width=2, bg='#cacaca', command=lambda:submit_clr2())
-button_clr2.place(relx=0.925, rely=0.28)
+button_clr2.place(relx=0.922, rely=0.28)
 status = Label(root, fg='blue', text='STATUS:  No data entered')
 status.place(relx=0.035, rely=0.89)
 

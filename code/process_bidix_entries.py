@@ -2,10 +2,12 @@ import os
 
 pdm_path = '' # used to check if paradigm path has changed
 pdms = [] # imported paradigms # [paradigm_name_i, [[entry_j_left, entry_j_right]]]
+punc_path = '' # used to check if punctuation path has changed
+puncs = [] # punctuations
 
-def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
-    global pdm_path
-    global pdms
+def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
+    global pdm_path, punc_path
+    global pdms, puncs
 
 
 
@@ -92,6 +94,34 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     
                 else:
                     flag1 = False
+
+    if len(punc) != 0:
+        if punc != punc_path:
+            punc_path = punc
+            puncs = []
+            punc_file = open(punc, 'r', newline='', encoding='utf-8')
+            punc_readline = punc_file.readlines()
+            for line in punc_readline:
+                puncs += line
+        #print(puncs, len(puncs))
+        
+        # delete unwanted and repeating
+        i1 = 0
+        while (i1 < len(puncs)):
+            if puncs[i1] == ' ' or puncs[i1] == '\r' or puncs[i1] == '\n':
+                del puncs[i1]
+            else:
+                i1 += 1
+        i1 = 0
+        while (i1 < len(puncs) - 1):
+            i2 = i1 + 1
+            while (i2 < len(puncs)):
+                if puncs[i1] == puncs[i2]:
+                    del puncs[i2]
+                else:
+                    i2 += 1
+            i1 += 1
+
 
     l1_lines = l1.splitlines() # segment content of l1 as individual lines
     l2_lines = l2.splitlines() # segment content of l2 as individual lines
@@ -480,9 +510,15 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     if l1_ent[i][0][i1].isspace() == False:
                         if l1_ent[i][0][i1 + 1].isspace():
                             count1 += 1
+                        elif puncs.__contains__(l1_ent[i][0][i1 + 1]) == True:
+                            count1 += 1
+                        elif (i1 - 1 >= 0) and puncs.__contains__(l1_ent[i][0][i1 - 1]) == True:
+                            count1 += 1
                     i1 += 1
                 if l1_ent[i][0][i1].isspace() == False:
                     count1 += 1
+                    #if puncs.__contains__(l1_ent[i][0][i1]) == True:
+                    #    count1 += 1
                 count2 = 0 # no. of words forming roots
                 j1 = 2
                 while (j1 < len(l1_ent[i]) - 1):
@@ -522,9 +558,15 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     if l2_ent[i][0][i2].isspace() == False:
                         if l2_ent[i][0][i2 + 1].isspace():
                             count1 += 1
+                        elif puncs.__contains__(l2_ent[i][0][i2 + 1]) == True:
+                            count1 += 1
+                        elif (i2 - 1 >= 0) and puncs.__contains__(l2_ent[i][0][i2 - 1]) == True:
+                            count1 += 1
                     i2 += 1
                 if l2_ent[i][0][i2].isspace() == False:
                     count1 += 1
+                    #elif puncs.__contains__(l2_ent[i][0][i2]) == True:
+                        #count1 += 1
                 count2 = 0 # no. of words forming roots
                 j1 = 2
                 while (j1 < len(l2_ent[i]) - 1):
@@ -562,17 +604,23 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 if crt_gmr1 == True:
                     if type(l1_ent[i][-1]) != list or type(l1_ent[i][-2]) != list:
                         crt_gmr1 = False
+
                 count1 = 0 # no. of words forming a group
                 i1 = 0
                 while (i1 < len(l1_ent[i][0]) - 1):
                     if l1_ent[i][0][i1].isspace() == False:
                         if l1_ent[i][0][i1 + 1].isspace():
                             count1 += 1
+                        elif puncs.__contains__(l1_ent[i][0][i1 + 1]) == True:
+                            count1 += 1
+                        elif (i1 - 1 >= 0) and puncs.__contains__(l1_ent[i][0][i1 - 1]) == True:
+                            count1 += 1
                     i1 += 1
                 if l1_ent[i][0][i1].isspace() == False:
                     count1 += 1
+                elif puncs.__contains__(l1_ent[i][0][i1]) == True:
+                    count1 += 1
                 count2 = 0 # no. of words forming roots
-                count3 = 0 # no. of roots
                 j1 = 2
                 while (j1 < len(l1_ent[i]) - 1):
                     if len(l1_ent[i][j1]) == 1:
@@ -592,10 +640,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                     else:
                                         cn_l1_r_groups[-1] += 1
                             i1 += 1
-                    count3 += 1
                     j1 += 2
                 #if len(l1_ent[i]) != (2 * count1) + 1 + 2:
-                if (count1 != count2) and (len(l1_ent[i]) != (2 * count3) + 1 + 2):
+                if (count1 != count2):
                     crt1 = False
                     break
 
@@ -609,17 +656,21 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 if crt_gmr2 == True:
                     if type(l2_ent[i][-1]) != list or type(l2_ent[i][-2]) != list:
                         crt_gmr2 = False
+
                 count1 = 0 # no. of words forming a group
                 i2 = 0
                 while (i2 < len(l2_ent[i][0]) - 1):
                     if l2_ent[i][0][i2].isspace() == False:
                         if l2_ent[i][0][i2 + 1].isspace():
                             count1 += 1
+                        elif puncs.__contains__(l2_ent[i][0][i2 + 1]) == True:
+                            count1 += 1
+                        elif (i2 - 1 >= 0) and puncs.__contains__(l2_ent[i][0][i2 - 1]) == True:
+                            count1 += 1
                     i2 += 1
                 if l2_ent[i][0][i2].isspace() == False:
                     count1 += 1
                 count2 = 0 # no. of words forming roots
-                count3 = 0 # no. of roots
                 j1 = 2
                 while (j1 < len(l2_ent[i]) - 1):
                     if len(l2_ent[i][j1]) == 1:
@@ -639,9 +690,8 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                     else:
                                         cn_l2_r_groups[-1] += 1
                             i1 += 1
-                    count3 += 1
                     j1 += 2
-                if (count1 != count2) and (len(l1_ent[i]) != (2 * count3) + 1 + 2):
+                if (count1 != count2):
                     crt2 = False
                     break
 
@@ -700,7 +750,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     while (j1 < len(l1_ent[i][0]) - 1):
                         if l1_ent[i][0][j1].isspace():
                             if l1_ent[i][0][j1 + 1].isspace() == False:
-                                if count2 >= cn_l1_r_groups[count1]:
+                                if puncs.__contains__(l1_ent[i][0][j1 + 1]) == True:
+                                    count2 = 1
+                                elif count2 >= cn_l1_r_groups[count1]:
                                     temp2 += '<b/>'
                                     pdm_check[0][0] += '<b/>'
                                     count1 += 1
@@ -713,13 +765,31 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                         count2 = 1
                                     else:
                                         count2 += 1
+                        elif puncs.__contains__(l1_ent[i][0][j1]) == True:
+                            temp2 += '<b/>'
+                            temp2 += l1_ent[i][0][j1]
+                            pdm_check[0][0] += '<b/>'
+                            pdm_check[0][0] += l1_ent[i][0][j1]
+                            count1 += 1
+                            count2 = 1
+                            if l1_ent[i][0][j1 + 1].isspace() == False: # w1,w2
+                                temp2 += '<b/>'
+                                pdm_check[0][0] += '<b/>'
                         else:
+                            if (j1 - 1 >= 0) and puncs.__contains__(l1_ent[i][0][j1 - 1]) == True:
+                                count1 += 1
                             temp2 += l1_ent[i][0][j1]
                             pdm_check[0][0] += l1_ent[i][0][j1]
                         j1 += 1
                     if l1_ent[i][0][j1].isspace() == False:
-                        temp2 += l1_ent[i][0][j1]
-                        pdm_check[0][0] += l1_ent[i][0][j1]
+                        if puncs.__contains__(l1_ent[i][0][j1]) == True:
+                            temp2 += '<b/>'
+                            temp2 += l1_ent[i][0][j1]
+                            pdm_check[0][0] += '<b/>'
+                            pdm_check[0][0] += l1_ent[i][0][j1]
+                        else:
+                            temp2 += l1_ent[i][0][j1]
+                            pdm_check[0][0] += l1_ent[i][0][j1]
 
                     r_list = [] # list of repeated 1st grammar types
                     j1 = 3
@@ -783,7 +853,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                         while (j1 < len(l2_ent[i][0]) - 1):
                             if l2_ent[i][0][j1].isspace():
                                 if l2_ent[i][0][j1 + 1].isspace() == False:
-                                    if count2 >= cn_l2_r_groups[count1]:
+                                    if puncs.__contains__(l2_ent[i][0][j1 + 1]) == True:
+                                        count2 = 1
+                                    elif count2 >= cn_l2_r_groups[count1]:
                                         temp3 += '<b/>'
                                         pdm_check[1][0] += '<b/>'
                                         count1 += 1
@@ -796,13 +868,31 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                             count2 = 1
                                         else:
                                             count2 += 1
+                            elif puncs.__contains__(l2_ent[i][0][j1]) == True:
+                                temp3 += '<b/>'
+                                temp3 += l2_ent[i][0][j1]
+                                pdm_check[1][0] += '<b/>'
+                                pdm_check[1][0] += l2_ent[i][0][j1]
+                                count1 += 1
+                                count2 = 1
+                                if l2_ent[i][0][j1 + 1].isspace() == False: # w1,w2
+                                    temp3 += '<b/>'
+                                    pdm_check[1][0] += '<b/>'
                             else:
+                                if (j1 - 1 >= 0) and puncs.__contains__(l2_ent[i][0][j1 - 1]) == True:
+                                    count1 += 1
                                 temp3 += l2_ent[i][0][j1]
                                 pdm_check[1][0] += l2_ent[i][0][j1]
                             j1 += 1
                         if l2_ent[i][0][j1].isspace() == False:
-                            temp3 += l2_ent[i][0][j1]
-                            pdm_check[1][0] += l2_ent[i][0][j1]
+                            if puncs.__contains__(l2_ent[i][0][j1]) == True:
+                                temp3 += '<b/>'
+                                temp3 += l2_ent[i][0][j1]
+                                pdm_check[1][0] += '<b/>'
+                                pdm_check[1][0] += l2_ent[i][0][j1]
+                            else:
+                                temp3 += l2_ent[i][0][j1]
+                                pdm_check[1][0] += l2_ent[i][0][j1]
 
                         r_list = [] # list of repeated 1st grammar types
                         j1 = 3
@@ -929,7 +1019,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     while (j1 < len(l2_ent[i][0]) - 1):
                         if l2_ent[i][0][j1].isspace():
                             if l2_ent[i][0][j1 + 1].isspace() == False:
-                                if count2 >= cn_l2_r_groups[count1]:
+                                if puncs.__contains__(l2_ent[i][0][j1 + 1]) == True:
+                                    count2 = 1
+                                elif count2 >= cn_l2_r_groups[count1]:
                                     temp2 += '<b/>'
                                     pdm_check[1][0] += '<b/>'
                                     count1 += 1
@@ -942,13 +1034,31 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                         count2 = 1
                                     else:
                                         count2 += 1
+                        elif puncs.__contains__(l2_ent[i][0][j1]) == True:
+                            temp2 += '<b/>'
+                            temp2 += l2_ent[i][0][j1]
+                            pdm_check[1][0] += '<b/>'
+                            pdm_check[1][0] += l2_ent[i][0][j1]
+                            count1 += 1
+                            count2 = 1
+                            if l2_ent[i][0][j1 + 1].isspace() == False: # w1,w2
+                                temp2 += '<b/>'
+                                pdm_check[1][0] += '<b/>'
                         else:
+                            if (j1 - 1 >= 0) and puncs.__contains__(l2_ent[i][0][j1 - 1]) == True:
+                                count1 += 1
                             temp2 += l2_ent[i][0][j1]
                             pdm_check[1][0] += l2_ent[i][0][j1]
                         j1 += 1
                     if l2_ent[i][0][j1].isspace() == False:
-                        temp2 += l2_ent[i][0][j1]
-                        pdm_check[1][0] += l2_ent[i][0][j1]
+                        if puncs.__contains__(l2_ent[i][0][j1]) == True:
+                            temp2 += '<b/>'
+                            temp2 += l2_ent[i][0][j1]
+                            pdm_check[1][0] += '<b/>'
+                            pdm_check[1][0] += l2_ent[i][0][j1]
+                        else:
+                            temp2 += l2_ent[i][0][j1]
+                            pdm_check[1][0] += l2_ent[i][0][j1]
                     
                     r_list = [] # list of repeated 1st grammar types
                     j1 = 3
@@ -1084,7 +1194,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 while (j1 < len(l1_ent[i][0]) - 1):
                     if l1_ent[i][0][j1].isspace():
                         if l1_ent[i][0][j1 + 1].isspace() == False:
-                            if count2 >= cn_l1_r_groups[count1]:
+                            if puncs.__contains__(l1_ent[i][0][j1 + 1]) == True:
+                                count2 = 1
+                            elif count2 >= cn_l1_r_groups[count1]:
                                 temp2 += '<b/>'
                                 pdm_check[0][0] += '<b/>'
                                 count1 += 1
@@ -1097,13 +1209,31 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                     count2 = 1
                                 else:
                                     count2 += 1
+                    elif puncs.__contains__(l1_ent[i][0][j1]) == True:
+                        temp2 += '<b/>'
+                        temp2 += l1_ent[i][0][j1]
+                        pdm_check[0][0] += '<b/>'
+                        pdm_check[0][0] += l1_ent[i][0][j1]
+                        count1 += 1
+                        count2 = 1
+                        if l1_ent[i][0][j1 + 1].isspace() == False: # w1,w2
+                            temp2 += '<b/>'
+                            pdm_check[0][0] += '<b/>'
                     else:
+                        if (j1 - 1 >= 0) and puncs.__contains__(l1_ent[i][0][j1 - 1]) == True:
+                            count1 += 1
                         temp2 += l1_ent[i][0][j1]
                         pdm_check[0][0] += l1_ent[i][0][j1]
                     j1 += 1
-                if l1_ent[i][0][j1].isspace() == False:
-                    temp2 += l1_ent[i][0][j1]
-                    pdm_check[0][0] += l1_ent[i][0][j1]
+                if l1_ent[i][0][j1].isspace() == False:   
+                    if puncs.__contains__(l1_ent[i][0][j1]) == True:
+                        temp2 += '<b/>'
+                        temp2 += l1_ent[i][0][j1]
+                        pdm_check[0][0] += '<b/>'
+                        pdm_check[0][0] += l1_ent[i][0][j1]
+                    else:
+                        temp2 += l1_ent[i][0][j1]
+                        pdm_check[0][0] += l1_ent[i][0][j1]
 
                 # new grammar types
                 for grm in l1_ent[i][-1]:
@@ -1134,7 +1264,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                     while (j1 < len(l2_ent[i][0]) - 1):
                         if l2_ent[i][0][j1].isspace():
                             if l2_ent[i][0][j1 + 1].isspace() == False:
-                                if count2 >= cn_l2_r_groups[count1]:
+                                if puncs.__contains__(l2_ent[i][0][j1 + 1]) == True:
+                                    count2 = 1
+                                elif count2 >= cn_l2_r_groups[count1]:
                                     temp3 += '<b/>'
                                     pdm_check[1][0] += '<b/>'
                                     count1 += 1
@@ -1147,13 +1279,31 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                         count2 = 1
                                     else:
                                         count2 += 1
+                        elif puncs.__contains__(l2_ent[i][0][j1]) == True:
+                            temp3 += '<b/>'
+                            temp3 += l2_ent[i][0][j1]
+                            pdm_check[1][0] += '<b/>'
+                            pdm_check[1][0] += l2_ent[i][0][j1]
+                            count1 += 1
+                            count2 = 1
+                            if l2_ent[i][0][j1 + 1].isspace() == False: # w1,w2
+                                temp3 += '<b/>'
+                                pdm_check[1][0] += '<b/>'
                         else:
+                            if (j1 - 1 >= 0) and puncs.__contains__(l2_ent[i][0][j1 - 1]) == True:
+                                count1 += 1
                             temp3 += l2_ent[i][0][j1]
                             pdm_check[1][0] += l2_ent[i][0][j1]
                         j1 += 1
                     if l2_ent[i][0][j1].isspace() == False:
-                        temp3 += l2_ent[i][0][j1]
-                        pdm_check[1][0] += l2_ent[i][0][j1]
+                        if puncs.__contains__(l2_ent[i][0][j1]) == True:
+                            temp3 += '<b/>'
+                            temp3 += l2_ent[i][0][j1]
+                            pdm_check[1][0] += '<b/>'
+                            pdm_check[1][0] += l2_ent[i][0][j1]
+                        else:
+                            temp3 += l2_ent[i][0][j1]
+                            pdm_check[1][0] += l2_ent[i][0][j1]
 
                     # new grammar types
                     for grm in l2_ent[i][-1]:
@@ -1233,7 +1383,9 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                 while (j1 < len(l2_ent[i][0]) - 1):
                     if l2_ent[i][0][j1].isspace():
                         if l2_ent[i][0][j1 + 1].isspace() == False:
-                            if count2 >= cn_l2_r_groups[count1]:
+                            if puncs.__contains__(l2_ent[i][0][j1 + 1]) == True:
+                                count2 = 1
+                            elif count2 >= cn_l2_r_groups[count1]:
                                 temp2 += '<b/>'
                                 pdm_check[1][0] += '<b/>'
                                 count1 += 1
@@ -1246,13 +1398,31 @@ def process_entries(output_type, lsx_type, addr, pdm, l1, l2):
                                     count2 = 1
                                 else:
                                     count2 += 1
+                    elif puncs.__contains__(l2_ent[i][0][j1]) == True:
+                        temp2 += '<b/>'
+                        temp2 += l2_ent[i][0][j1]
+                        pdm_check[1][0] += '<b/>'
+                        pdm_check[1][0] += l2_ent[i][0][j1]
+                        count1 += 1
+                        count2 = 1
+                        if l2_ent[i][0][j1 + 1].isspace() == False: # w1,w2
+                            temp2 += '<b/>'
+                            pdm_check[1][0] += '<b/>'
                     else:
+                        if (j1 - 1 >= 0) and puncs.__contains__(l2_ent[i][0][j1 - 1]) == True:
+                            count1 += 1
                         temp2 += l2_ent[i][0][j1]
                         pdm_check[1][0] += l2_ent[i][0][j1]
                     j1 += 1
                 if l2_ent[i][0][j1].isspace() == False:
-                    temp2 += l2_ent[i][0][j1]
-                    pdm_check[1][0] += l2_ent[i][0][j1]
+                    if puncs.__contains__(l2_ent[i][0][j1]) == True:
+                        temp2 += '<b/>'
+                        temp2 += l2_ent[i][0][j1]
+                        pdm_check[1][0] += '<b/>'
+                        pdm_check[1][0] += l2_ent[i][0][j1]
+                    else:    
+                        temp2 += l2_ent[i][0][j1]
+                        pdm_check[1][0] += l2_ent[i][0][j1]
                 
                 # new grammar types
 
