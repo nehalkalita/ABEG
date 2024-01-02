@@ -472,18 +472,33 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
     l1_ent_type = [] # 0 -> dix; 1 -> lsx
     l2_ent_type = [] # 0 -> dix; 1 -> lsx
     
-    for j in l1_ent:
-        if type(j[1]) == list:
-            l1_ent_type.append(0)
-        else:
-            l1_ent_type.append(1)
-    
-    for j in l2_ent:
-        if type(j[1]) == list:
-            l2_ent_type.append(0)
-        else:
-            l2_ent_type.append(1)
+    flag1,flag2 = True, True
 
+    try:
+        for j in l1_ent:
+            if type(j[1]) == list:
+                l1_ent_type.append(0)
+            else:
+                l1_ent_type.append(1)
+    except:
+        flag1 = False
+    try:
+        for j in l2_ent:
+            if type(j[1]) == list:
+                l2_ent_type.append(0)
+            else:
+                l2_ent_type.append(1)
+    except:
+        flag2 = False
+    if flag1 == False and flag2 == False:
+        msg_rtn = 'Wrong data entered for both languages'
+        return msg_rtn, 2
+    elif flag1 == False:
+        msg_rtn = 'Wrong data entered for languagee 1'
+        return msg_rtn, 2
+    elif flag2 == False:
+        msg_rtn = 'Wrong data entered for languagee 2'
+        return msg_rtn, 2
 
 
     # check correctness of entries by counting no. of lines for each
