@@ -27,10 +27,10 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
         msg_rtn = 'No data entered for both languages'
         return msg_rtn, 0
     elif len(l1) == 0:
-        msg_rtn = 'No data entered for Language 1'
+        msg_rtn = 'No data entered for language 1'
         return msg_rtn, 0
     elif len(l2) == 0:
-        msg_rtn = 'No data entered for Language 2'
+        msg_rtn = 'No data entered for language 2'
         return msg_rtn, 0
     
     if len(pdm) != 0:
@@ -192,6 +192,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
 
     # store in l1_ent
 
+    flag1g = True
     for i in l1_lines:
         if i != '':
             if i.__contains__('↤') == True:
@@ -232,6 +233,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
 
             elif (i.__contains__('[') == True) and (i.__contains__(']') == True):
                 l1_ent[-1].append([])
+                flag1g_i = False
                 temp1 = ''
                 for j in i:
                     if j == '<' or j.isspace() or j == '[':
@@ -241,7 +243,10 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         temp1 = ''
                     else:
                         temp1 += j
-                        
+                        flag1g_i = True
+                if flag1g == True and flag1g_i == False:
+                    flag1g = False
+
             elif (i.__contains__('<') == True) and (i.__contains__('>') == True) and (i.__contains__('<b/>') == False):
                 temp_inf = i.split('/')
                 if temp_inf[0].__contains__('<') == True:
@@ -289,7 +294,8 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
 
         else:
             l1_ent.append([])
-
+    if flag1g == False:
+        msg_rtn = 'Missing grammar types for '
 
 
     # delete unwanted blank lines
@@ -356,6 +362,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
 
     # store in l2_ent
 
+    flag2g = True
     for i in l2_lines:
         if i != '':
             if i.__contains__('↤') == True:
@@ -397,6 +404,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
             elif (i.__contains__('[') == True) and (i.__contains__(']') == True):
                 l2_ent[-1].append([])
                 temp1 = ''
+                flag2g_i = False
                 for j in i:
                     if j == '<' or j.isspace() or j == '[':
                         pass
@@ -405,6 +413,9 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         temp1 = ''
                     else:
                         temp1 += j
+                        flag2g_i = True
+                if flag2g == True and flag2g_i == False:
+                    flag2g = False
                         
             elif (i.__contains__('<') == True) and (i.__contains__('>') == True) and (i.__contains__('<b/>') == False):
                 temp_inf = i.split('/')
@@ -453,6 +464,16 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
 
         else:
             l2_ent.append([])
+    
+    if flag2g == False:
+        if flag1g == False:
+            msg_rtn += 'both languages'
+        else:
+            msg_rtn = 'Missing grammar types for language 2'
+        return msg_rtn, 2
+    elif flag1g == False:
+        msg_rtn += 'language 1'
+        return msg_rtn, 2
     
     if len(l1_ent) != len(l2_ent):
         msg_rtn = 'Total no. of entries should be same on both sides'
@@ -844,7 +865,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                     msg_rtn = ''
 
                 except:
-                    msg_rtn = 'Possible error in grammar types for ' #Language 1             
+                    msg_rtn = 'Possible error in grammar types for ' #language 1             
             
                 if l2_ent_type[i] == 1:
 
@@ -943,8 +964,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                             j1 += 1
                             
                         temp1 = temp1 + temp3 + '</r></p>\n</e>'
-                        l2_lsx.append(temp1)                
-
+                        l2_lsx.append(temp1)
 
 
                         # compare pdm_check with entries in pdms
@@ -961,26 +981,27 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                                 temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + pdm_check[1][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                 break
                             pdm_list += 1
-                        if pdm_list == len(pdms) or len(pdms) == 0:
-                            temp1 = '<e><p><l>' + temp2 + '</l><r>' + temp3 + '</r></p></e>'
-                        gen_dix[-1].append(temp1)
-
-                        if msg_rtn != '':
-                            msg_rtn = msg_rtn + 'Language 1'
+                        
+                        if msg_rtn != '': # temp2 does not exist
+                            msg_rtn = msg_rtn + 'language 1'
                             return msg_rtn, 2
+                        else:
+                            if pdm_list == len(pdms) or len(pdms) == 0:
+                                temp1 = '<e><p><l>' + str(temp2) + '</l><r>' + str(temp3) + '</r></p></e>'
+                            gen_dix[-1].append(temp1)
 
                     except:
                         if msg_rtn != '':
                             msg_rtn = msg_rtn + 'both languages'
                             return msg_rtn, 2
                         else:
-                            msg_rtn = 'Possible error in grammar types for Language 2'
+                            msg_rtn = 'Possible error in grammar types for language 2'
                             return msg_rtn, 2
 
 
                 else:
                     if msg_rtn != '':
-                        msg_rtn = msg_rtn + 'Language 1'
+                        msg_rtn = msg_rtn + 'language 1'
                         return msg_rtn, 2
                     
                     j1 = 0
@@ -1139,7 +1160,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         j1 += 2
                 
                 except:
-                    msg_rtn = 'Possible error in grammar types for Language 2'
+                    msg_rtn = 'Possible error in grammar types for language 2'
                     return msg_rtn, 2
 
             else:
