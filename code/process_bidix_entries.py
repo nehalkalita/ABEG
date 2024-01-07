@@ -261,13 +261,25 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         j1 += 1
                     l1_ent[-1].append(temp1)
                     l1_ent[-1].append([])
+                    flag1g_1_i = False # for starting a bracket of grammar
+                    flag1g_2_i = False # for indicating grammar within bracket
                     while (j1 < len(temp_inf[j])):
                         if temp_inf[j][j1] == '<':
                             temp1 = ''
+                            if flag1g_1_i == False:
+                                flag1g_1_i = True
+                            else:
+                                flag1g = False
                         elif temp_inf[j][j1] == '>':
                             l1_ent[-1][-1].append(temp1)
+                            if flag1g_2_i == False:
+                                flag1g = False
+                            flag1g_1_i = False
+                            flag1g_2_i = False
                         else:
                             temp1 += temp_inf[j][j1]
+                            if flag1g_1_i == True:
+                                flag1g_2_i = True
                         j1 += 1
                     j += 1
 
@@ -431,13 +443,26 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         j1 += 1
                     l2_ent[-1].append(temp1)
                     l2_ent[-1].append([])
+                    flag2g_1_i = False # for starting a bracket of grammar
+                    flag2g_2_i = False # for indicating grammar within bracket
                     while (j1 < len(temp_inf[j])):
                         if temp_inf[j][j1] == '<':
                             temp1 = ''
+                            if flag2g_1_i == False:
+                                flag2g_1_i = True
+                            else:
+                                flag2g = False
                         elif temp_inf[j][j1] == '>':
                             l2_ent[-1][-1].append(temp1)
+                            if flag2g_2_i == False:
+                                flag2g = False
+                            flag2g_1_i = False
+                            flag2g_2_i = False
                         else:
                             temp1 += temp_inf[j][j1]
+                            if flag2g_1_i == True:
+                                flag2g_2_i = True
+                        #print(temp_inf[j][j1], flag2g_i, temp_inf[j])
                         j1 += 1
                     j += 1
 
