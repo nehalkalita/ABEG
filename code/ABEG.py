@@ -38,6 +38,8 @@ def submit1_a():
         color_msg = 'blue'
     elif msg_rtn[1] == 1:
         color_msg = '#005000'
+    elif msg_rtn[1] == 3:
+        color_msg = '#002000'
     else:
         color_msg = 'red'
     status.configure(fg=color_msg, text='STATUS:  ' + msg_rtn[0])

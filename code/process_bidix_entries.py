@@ -4,10 +4,14 @@ pdm_path = '' # used to check if paradigm path has changed
 pdms = [] # imported paradigms # [paradigm_name_i, [[entry_j_left, entry_j_right]]]
 punc_path = '' # used to check if punctuation path has changed
 puncs = [] # punctuations
+c_entry_repeat = False # True -> repetitive correct entry
+c_entry_color = 1 # switch between 1 and 2; 1 is default
 
 def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
     global pdm_path, punc_path
     global pdms, puncs
+    global c_entry_repeat
+    global c_entry_color
 
 
 
@@ -22,15 +26,19 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
     
     if len(addr) == 0:
         msg_rtn = 'Output directory not specified'
+        c_entry_repeat = False
         return msg_rtn, 0
     if len(l1) == 0 and len(l2) == 0:
         msg_rtn = 'No data entered for both languages'
+        c_entry_repeat = False
         return msg_rtn, 0
     elif len(l1) == 0:
         msg_rtn = 'No data entered for language 1'
+        c_entry_repeat = False
         return msg_rtn, 0
     elif len(l2) == 0:
         msg_rtn = 'No data entered for language 2'
+        c_entry_repeat = False
         return msg_rtn, 0
     
     if len(pdm) != 0:
@@ -495,13 +503,16 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
             msg_rtn += 'both languages'
         else:
             msg_rtn = 'Missing grammar types for language 2'
+        c_entry_repeat = False
         return msg_rtn, 2
     elif flag1g == False:
         msg_rtn += 'language 1'
+        c_entry_repeat = False
         return msg_rtn, 2
     
     if len(l1_ent) != len(l2_ent):
         msg_rtn = 'Total no. of entries should be same on both sides'
+        c_entry_repeat = False
         return msg_rtn, 2
     
     """for j in l1_ent:
@@ -538,12 +549,15 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
         flag2 = False
     if flag1 == False and flag2 == False:
         msg_rtn = 'Wrong data entered for both languages'
+        c_entry_repeat = False
         return msg_rtn, 2
     elif flag1 == False:
         msg_rtn = 'Wrong data entered for languagee 1'
+        c_entry_repeat = False
         return msg_rtn, 2
     elif flag2 == False:
         msg_rtn = 'Wrong data entered for languagee 2'
+        c_entry_repeat = False
         return msg_rtn, 2
 
 
@@ -600,6 +614,10 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                                     else:
                                         cn_l1_r_groups[-1] += 1
                             i1 += 1
+                        if i1 > 1: # For words of length 1 placed at last
+                            if l1_ent[i][j1][i1 - 1].isspace() and l1_ent[i][j1][i1].isspace() == False:
+                                count2 += 1
+                                cn_l1_r_groups[-1] += 1
                     j1 += 2
                 #if len(l1_ent[i]) != (2 * count1) + 2:
                 if count1 != count2:
@@ -648,6 +666,10 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                                     else:
                                         cn_l2_r_groups[-1] += 1
                             i1 += 1
+                        if i1 > 1: # For words of length 1 placed at last
+                            if l2_ent[i][j1][i1 - 1].isspace() and l2_ent[i][j1][i1].isspace() == False:
+                                count2 += 1
+                                cn_l2_r_groups[-1] += 1
                     j1 += 2
                 if count1 != count2:
                     crt2 = False
@@ -701,6 +723,10 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                                     else:
                                         cn_l1_r_groups[-1] += 1
                             i1 += 1
+                        if i1 > 1: # For words of length 1 placed at last
+                            if l1_ent[i][j1][i1 - 1].isspace() and l1_ent[i][j1][i1].isspace() == False:
+                                count2 += 1
+                                cn_l1_r_groups[-1] += 1
                     j1 += 2
                 #if len(l1_ent[i]) != (2 * count1) + 1 + 2:
                 if (count1 != count2):
@@ -751,6 +777,10 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                                     else:
                                         cn_l2_r_groups[-1] += 1
                             i1 += 1
+                        if i1 > 1: # For words of length 1 placed at last
+                            if l2_ent[i][j1][i1 - 1].isspace() and l2_ent[i][j1][i1].isspace() == False:
+                                count2 += 1
+                                cn_l2_r_groups[-1] += 1
                     j1 += 2
                 if (count1 != count2):
                     crt2 = False
@@ -759,22 +789,28 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
     if lsx_type == 1:
         if (crt_gmr1 == False) and (crt_gmr2 == False):
             msg_rtn = 'Missing new assigned grammar types for both languages'
+            c_entry_repeat = False
             return msg_rtn, 2
         elif crt_gmr1 == False:
             msg_rtn = 'Missing new assigned grammar types for language 1'
+            c_entry_repeat = False
             return msg_rtn, 2
         elif crt_gmr2 == False:
             msg_rtn = 'Missing new assigned grammar types for language 2'
+            c_entry_repeat = False
             return msg_rtn, 2
           
     if (crt1 == False) and (crt2 == False):
         msg_rtn = 'Missing root word or grammar types for both languages'
+        c_entry_repeat = False
         return msg_rtn, 2
     elif crt1 == False:
         msg_rtn = 'Missing root word or grammar types for language 1'
+        c_entry_repeat = False
         return msg_rtn, 2
     elif crt2 == False:
         msg_rtn = 'Missing root word or grammar types for language 2'
+        c_entry_repeat = False
         return msg_rtn, 2
 
 
@@ -1009,6 +1045,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         
                         if msg_rtn != '': # temp2 does not exist
                             msg_rtn = msg_rtn + 'language 1'
+                            c_entry_repeat = False
                             return msg_rtn, 2
                         else:
                             if pdm_list == len(pdms) or len(pdms) == 0:
@@ -1018,15 +1055,18 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                     except:
                         if msg_rtn != '':
                             msg_rtn = msg_rtn + 'both languages'
+                            c_entry_repeat = False
                             return msg_rtn, 2
                         else:
                             msg_rtn = 'Possible error in grammar types for language 2'
+                            c_entry_repeat = False
                             return msg_rtn, 2
 
 
                 else:
                     if msg_rtn != '':
                         msg_rtn = msg_rtn + 'language 1'
+                        c_entry_repeat = False
                         return msg_rtn, 2
                     
                     j1 = 0
@@ -1186,6 +1226,7 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                 
                 except:
                     msg_rtn = 'Possible error in grammar types for language 2'
+                    c_entry_repeat = False
                     return msg_rtn, 2
 
             else:
@@ -1649,9 +1690,21 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
         l2_lsx_file.write('\n')
 
     msg_rtn = 'Successfully generated Apertium entries'
-    return msg_rtn, 1
+    if c_entry_repeat == False:
+        c_entry_repeat = True
+        c_entry_color = 3
+        return msg_rtn, 1
+    else:
+        if c_entry_color == 3:
+            c_entry_color = 1
+            return msg_rtn, 3
+        else:
+            c_entry_color = 3
+            return msg_rtn, 1
 
 def delete_duplicate(addr):
+    global c_entry_repeat
+    
     f_test = [1, 1, 1]# 0 if file does not exits    # dix, l1_lsx, l2_lsx
     
     try:
@@ -1818,10 +1871,13 @@ def delete_duplicate(addr):
 
     if addr == '' or addr.isspace():
         msg_rtn = 'Output directory not specified'
+        c_entry_repeat = False
         return msg_rtn, 0
     elif f_test[0] == 0 and f_test[1] == 0 and f_test[2] == 0:
         msg_rtn = 'No output files found'
+        c_entry_repeat = False
         return msg_rtn, 0
     else:
         msg_rtn = 'Successfully deleted duplicate entries'
+        c_entry_repeat = False
         return msg_rtn, 1
