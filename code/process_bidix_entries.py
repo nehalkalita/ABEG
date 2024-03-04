@@ -1029,27 +1029,30 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
 
 
                         # compare pdm_check with entries in pdms
-
-                        pdm_list = 0
-                        while (pdm_list < len(pdms)):
-                            j1 = 0
-                            while (j1 < len(pdms[pdm_list][1])):
-                                if pdms[pdm_list][1][j1][0] == pdm_check[0][1] and pdms[pdm_list][1][j1][1] == pdm_check[1][1]:
-                                    break
-                                j1 += 1
-                            if j1 < len(pdms[pdm_list][1]):
-                                # add new temp1 here
-                                temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + pdm_check[1][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                                break
-                            pdm_list += 1
                         
                         if msg_rtn != '': # temp2 does not exist
                             msg_rtn = msg_rtn + 'language 1'
                             c_entry_repeat = False
                             return msg_rtn, 2
-                        else:
+                        
+                        if pdm_check[0][0].__contains__('<b/>') == False and pdm_check[1][0].__contains__('<b/>') == False:
+                            pdm_list = 0
+                            while (pdm_list < len(pdms)):
+                                j1 = 0
+                                while (j1 < len(pdms[pdm_list][1])):
+                                    if pdms[pdm_list][1][j1][0] == pdm_check[0][1] and pdms[pdm_list][1][j1][1] == pdm_check[1][1]:
+                                        break
+                                    j1 += 1
+                                if j1 < len(pdms[pdm_list][1]):
+                                    # add new temp1 here
+                                    temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + pdm_check[1][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
+                                    break
+                                pdm_list += 1
                             if pdm_list == len(pdms) or len(pdms) == 0:
                                 temp1 = '<e><p><l>' + str(temp2) + '</l><r>' + str(temp3) + '</r></p></e>'
+                            gen_dix[-1].append(temp1)
+                        else:
+                            temp1 = '<e><p><l>' + str(temp2) + '</l><r>' + str(temp3) + '</r></p></e>'
                             gen_dix[-1].append(temp1)
 
                     except:
@@ -1079,21 +1082,25 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         
                         # compare pdm_check with entries in pdms
 
-                        pdm_list = 0
-                        while (pdm_list < len(pdms)):
-                            j = 0
-                            while (j < len(pdms[pdm_list][1])):
-                                if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                        if pdm_check[0][0].__contains__('<b/>') == False:
+                            pdm_list = 0
+                            while (pdm_list < len(pdms)):
+                                j = 0
+                                while (j < len(pdms[pdm_list][1])):
+                                    if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                                        break
+                                    j += 1
+                                if j < len(pdms[pdm_list][1]):
+                                    # add new temp1 here
+                                    temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + l2_ent[i][j1] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                     break
-                                j += 1
-                            if j < len(pdms[pdm_list][1]):
-                                # add new temp1 here
-                                temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + l2_ent[i][j1] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                                break
-                            pdm_list += 1
-                        if pdm_list == len(pdms) or len(pdms) == 0:
+                                pdm_list += 1
+                            if pdm_list == len(pdms) or len(pdms) == 0:
+                                temp1 = temp1 + '</r></p></e>'
+                            gen_dix[-1].append(temp1)
+                        else:
                             temp1 = temp1 + '</r></p></e>'
-                        gen_dix[-1].append(temp1)
+                            gen_dix[-1].append(temp1)
                         j1 += 2
 
             elif l2_ent_type[i] == 1:
@@ -1207,21 +1214,25 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         
                         # compare pdm_check with entries in pdms
 
-                        pdm_list = 0
-                        while (pdm_list < len(pdms)):
-                            j = 0
-                            while (j < len(pdms[pdm_list][1])):
-                                if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                        if pdm_check[1][0].__contains__('<b/>') == False:
+                            pdm_list = 0
+                            while (pdm_list < len(pdms)):
+                                j = 0
+                                while (j < len(pdms[pdm_list][1])):
+                                    if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                                        break
+                                    j += 1
+                                if j < len(pdms[pdm_list][1]):
+                                    # add new temp1 here
+                                    temp1 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + pdm_check[0][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                     break
-                                j += 1
-                            if j < len(pdms[pdm_list][1]):
-                                # add new temp1 here
-                                temp1 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + pdm_check[0][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                                break
-                            pdm_list += 1
-                        if pdm_list == len(pdms) or len(pdms) == 0:
+                                pdm_list += 1
+                            if pdm_list == len(pdms) or len(pdms) == 0:
+                                temp1 = temp1 + '</l><r>' + temp2 + '</r></p></e>'
+                            gen_dix[-1].append(temp1)
+                        else:
                             temp1 = temp1 + '</l><r>' + temp2 + '</r></p></e>'
-                        gen_dix[-1].append(temp1)
+                            gen_dix[-1].append(temp1)
                         j1 += 2
                 
                 except:
@@ -1251,21 +1262,25 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         
                         # compare pdm_check with entries in pdms
 
-                        pdm_list = 0
-                        while (pdm_list < len(pdms)):
-                            j = 0
-                            while (j < len(pdms[pdm_list][1])):
-                                if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                        if l1_ent[i][j1].__contains__('<b/>') == False and l2_ent[i][j2].__contains__('<b/>') == False:
+                            pdm_list = 0
+                            while (pdm_list < len(pdms)):
+                                j = 0
+                                while (j < len(pdms[pdm_list][1])):
+                                    if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                                        break
+                                    j += 1
+                                if j < len(pdms[pdm_list][1]):
+                                    # add new temp2 here
+                                    temp2 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + l2_ent[i][j2] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                     break
-                                j += 1
-                            if j < len(pdms[pdm_list][1]):
-                                # add new temp2 here
-                                temp2 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + l2_ent[i][j2] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                                break
-                            pdm_list += 1
-                        if pdm_list == len(pdms) or len(pdms) == 0:
+                                pdm_list += 1
+                            if pdm_list == len(pdms) or len(pdms) == 0:
+                                temp2 = temp2 + '</r></p></e>'
+                            gen_dix[-1].append(temp2)
+                        else:
                             temp2 = temp2 + '</r></p></e>'
-                        gen_dix[-1].append(temp2)
+                            gen_dix[-1].append(temp2)
                         j2 += 2                
                     j1 += 2
 
@@ -1418,21 +1433,25 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
 
                     # compare pdm_check with entries in pdms
 
-                    pdm_list = 0
-                    while (pdm_list < len(pdms)):
-                        j1 = 0
-                        while (j1 < len(pdms[pdm_list][1])):
-                            if pdms[pdm_list][1][j1][0] == pdm_check[0][1] and pdms[pdm_list][1][j1][1] == pdm_check[1][1]:
+                    if pdm_check[0][0].__contains__('<b/>') == False and pdm_check[1][0].__contains__('<b/>') == False:
+                        pdm_list = 0
+                        while (pdm_list < len(pdms)):
+                            j1 = 0
+                            while (j1 < len(pdms[pdm_list][1])):
+                                if pdms[pdm_list][1][j1][0] == pdm_check[0][1] and pdms[pdm_list][1][j1][1] == pdm_check[1][1]:
+                                    break
+                                j1 += 1
+                            if j1 < len(pdms[pdm_list][1]):
+                                # add new temp1 here
+                                temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + pdm_check[1][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                 break
-                            j1 += 1
-                        if j1 < len(pdms[pdm_list][1]):
-                            # add new temp1 here
-                            temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + pdm_check[1][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                            break
-                        pdm_list += 1
-                    if pdm_list == len(pdms) or len(pdms) == 0:
+                            pdm_list += 1
+                        if pdm_list == len(pdms) or len(pdms) == 0:
+                            temp1 = '<e><p><l>' + temp2 + '</l><r>' + temp3 + '</r></p></e>'
+                        gen_dix[-1].append(temp1)
+                    else:
                         temp1 = '<e><p><l>' + temp2 + '</l><r>' + temp3 + '</r></p></e>'
-                    gen_dix[-1].append(temp1)
+                        gen_dix[-1].append(temp1)
 
                 else:
                     j1 = 0
@@ -1444,26 +1463,30 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                             pdm_check[1][1] = pdm_check[1][1] + '<s n="' + grm + '"/>'
                         
                         # compare pdm_check with entries in pdms
-
-                        pdm_list = 0
-                        while (pdm_list < len(pdms)):
-                            j = 0
-                            while (j < len(pdms[pdm_list][1])):
-                                if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                        
+                        if pdm_check[0][0].__contains__('<b/>') == False:
+                            pdm_list = 0
+                            while (pdm_list < len(pdms)):
+                                j = 0
+                                while (j < len(pdms[pdm_list][1])):
+                                    if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                                        break
+                                    j += 1
+                                if j < len(pdms[pdm_list][1]):
+                                    # add new temp1 here
+                                    temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + l2_ent[i][j1] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                     break
-                                j += 1
-                            if j < len(pdms[pdm_list][1]):
-                                # add new temp1 here
-                                temp1 = '<e><p><l>' + pdm_check[0][0] + '</l><r>' + l2_ent[i][j1] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                                break
-                            pdm_list += 1
-                        if pdm_list == len(pdms) or len(pdms) == 0:    
-                            temp1 = temp1 + '</r></p></e>'
-                        gen_dix[-1].append(temp1)
+                                pdm_list += 1
+                            if pdm_list == len(pdms) or len(pdms) == 0:    
+                                temp1 = temp1 + '</r></p></e>'
+                            gen_dix[-1].append(temp1)
+                        else:
+                            temp1 = '<e><p><l>' + temp2 + '</l><r>' + l2_ent[i][j1] + '</r></p></e>'
+                            gen_dix[-1].append(temp1)
                         j1 += 2
 
             elif l2_ent_type[i] == 1:
-
+                
                 # enter in l2_l1_lsx
 
                 gen_dix.append([])
@@ -1544,22 +1567,26 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
                         pdm_check[0][1] = pdm_check[0][1] + '<s n="' + grm + '"/>'
                     
                     # compare pdm_check with entries in pdms
-
-                    pdm_list = 0
-                    while (pdm_list < len(pdms)):
-                        j = 0
-                        while (j < len(pdms[pdm_list][1])):
-                            if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                    
+                    if pdm_check[1][0].__contains__('<b/>') == False:
+                        pdm_list = 0
+                        while (pdm_list < len(pdms)):
+                            j = 0
+                            while (j < len(pdms[pdm_list][1])):
+                                if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                                    break
+                                j += 1
+                            if j < len(pdms[pdm_list][1]):
+                                # add new temp1 here
+                                temp1 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + pdm_check[1][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                 break
-                            j += 1
-                        if j < len(pdms[pdm_list][1]):
-                            # add new temp1 here
-                            temp1 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + pdm_check[0][0] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                            break
-                        pdm_list += 1
-                    if pdm_list == len(pdms) or len(pdms) == 0:
-                        temp1 = temp1 + '</l><r>' + temp2 + '</r></p></e>'
-                    gen_dix[-1].append(temp1)
+                            pdm_list += 1
+                        if pdm_list == len(pdms) or len(pdms) == 0:
+                            temp1 = temp1 + '</l><r>' + temp2 + '</r></p></e>'
+                        gen_dix[-1].append(temp1)
+                    else:
+                        temp1 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + temp2 + '</r></p></e>'
+                        gen_dix[-1].append(temp1)
                     j1 += 2
 
             else:
@@ -1584,21 +1611,25 @@ def process_entries(output_type, lsx_type, addr, pdm, punc, l1, l2):
 
                         # compare pdm_check with entries in pdms
 
-                        pdm_list = 0
-                        while (pdm_list < len(pdms)):
-                            j = 0
-                            while (j < len(pdms[pdm_list][1])):
-                                if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                        if l1_ent[i][j1].__contains__('<b/>') == False and l2_ent[i][j2].__contains__('<b/>') == False:
+                            pdm_list = 0
+                            while (pdm_list < len(pdms)):
+                                j = 0
+                                while (j < len(pdms[pdm_list][1])):
+                                    if pdms[pdm_list][1][j][0] == pdm_check[0][1] and pdms[pdm_list][1][j][1] == pdm_check[1][1]:
+                                        break
+                                    j += 1
+                                if j < len(pdms[pdm_list][1]):
+                                    # add new temp2 here
+                                    temp2 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + l2_ent[i][j2] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
                                     break
-                                j += 1
-                            if j < len(pdms[pdm_list][1]):
-                                # add new temp2 here
-                                temp2 = '<e><p><l>' + l1_ent[i][j1] + '</l><r>' + l2_ent[i][j2] + '</r></p><par n="' + pdms[pdm_list][0] + '"/></e>'
-                                break
-                            pdm_list += 1
-                        if pdm_list == len(pdms) or len(pdms) == 0:
+                                pdm_list += 1
+                            if pdm_list == len(pdms) or len(pdms) == 0:
+                                temp2 = temp2 + '</r></p></e>'
+                            gen_dix[-1].append(temp2)
+                        else:
                             temp2 = temp2 + '</r></p></e>'
-                        gen_dix[-1].append(temp2)
+                            gen_dix[-1].append(temp2)
                         j2 += 2                
                     j1 += 2
 
